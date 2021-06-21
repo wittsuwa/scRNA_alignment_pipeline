@@ -1,0 +1,10 @@
+######This contains codes for Single-cell or Single-nuclei RNA analysis pipeline
+
+###Step1 Download file
+wget url_link.ftp
+
+#hint
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR523/ERR523158/ERR523158_1.fastq.gz
+
+
+###Step2 
