@@ -1,10 +1,52 @@
 ######This contains codes for Single-cell or Single-nuclei RNA analysis pipeline
 
 ###Step1 Download file
+
+#fastq files
 wget url_link.ftp
+
+#Genome, FASTA, GTF files (annotation)
+
+#Create indices for Aligner (STAR)
+
+#Two steps are required to perform STAR alignment. 
+#In the first step, the user provides STAR with reference genome sequences (FASTA) and annotations (GTF), which STAR uses to create a genome index. 
+#In the second step, STAR maps the user’s reads data to the genome index.
+
+mkdir indices
+mkdir indices/STAR
+STAR --runThreadN 4 --runMode genomeGenerate --genomeDir indices/STAR --genomeFastaFiles reference.transcripts.fa
+
 
 #hint
 wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR523/ERR523158/ERR523158_1.fastq.gz
 
 
-###Step2 
+###Step2 Processing Raw file
+##FastQC
+#make a directory and do QC
+
+mkdir fastqc_results
+fastqc -o fastqc_results filename_1.fastq filename_2.fastq
+
+###Step3 Trim the reads
+
+mkdir fastq_trimmed_results
+trim_galore --nextera -o fastq_trimmed_results filename_1.fastq filename_2.fastq
+
+###Step4 Check QC again
+
+fastqc -o fastqc_results filename_trimmed_1.fastq filename_trimmed_2.fastq
+
+###Step5 STAR Alignment
+
+mkdir results
+mkdir results/STAR
+STAR --runThreadN 4 --genomeDir indices/STAR --readFilesIn filename_1.fastq filename_2.fastq --outFileNamePrefix results/STAR/
+
+###Step6 Construction of expression matrix
+
+
+
+
+
