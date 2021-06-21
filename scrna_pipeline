@@ -44,9 +44,35 @@ mkdir results
 mkdir results/STAR
 STAR --runThreadN 4 --genomeDir indices/STAR --readFilesIn filename_1.fastq filename_2.fastq --outFileNamePrefix results/STAR/
 
-###Step6 Construction of expression matrix
+###Step7 Play with files
+#convert BAM/SAM files
+
+samtools view -S -b filename.sam > filename.bam
+samtools view -h filename.bam > filename.sam
+
+# sort reads by name
+samtools sort -n original.bam -o sorted_by_name.bam
+
+# remove secondary alignments
+samtools view -b -F 256 sorted_by_name.bam -o primary_alignment_only.bam
+
+# convert to fastq
+bedtools bamtofastq -i primary_alignment_only.bam -fq read1.fq -fq2 read2.fq
 
 
+###Step8 Construction of expression matrix
+#check the reads again (after the alignment)
 
+fastqc aligned_file.bam
+
+#Map read.bam using STAR
+
+$<path_to_STAR>/STAR --runThreadN 1 --runMode alignReads
+--readFilesIn reads1.fq.gz reads2.fq.gz --readFilesCommand zcat --genomeDir <path>
+--parametersFiles FileOfMoreParameters.txt --outFileNamePrefix <outpath>/output
+
+#An example of how to quantify expression using Salmon is
+
+$<path_to_Salmon>/salmon quant -i salmon_transcript_index -1 reads1.fq.gz -2 reads2.fq.gz -p #threads -l A -g genome.gtf --seqBias --gcBias --posBias
 
 
