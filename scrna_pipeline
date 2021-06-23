@@ -13,6 +13,15 @@ wget url_link.ftp
 #In the first step, the user provides STAR with reference genome sequences (FASTA) and annotations (GTF), which STAR uses to create a genome index. 
 #In the second step, STAR maps the user’s reads data to the genome index.
 
+#Download DNA (FASTA file). This is for mouse model
+wget http://ftp.ensembl.org/pub/release-104/fasta/mus_musculus/dna/Mus_musculus.GRCm39.dna.primary_assembly.fa.gz
+
+
+#Download Gene Annotation (GTF file). This is for mouse model
+wget http://ftp.ensembl.org/pub/release-104/gtf/mus_musculus/Mus_musculus.GRCm39.104.gtf.gz
+
+##Build indices for STAR
+
 mkdir indices
 mkdir indices/STAR
 STAR --runThreadN 4 --runMode genomeGenerate --genomeDir indices/STAR --genomeFastaFiles reference.transcripts.fa
@@ -74,5 +83,7 @@ $<path_to_STAR>/STAR --runThreadN 1 --runMode alignReads
 #An example of how to quantify expression using Salmon is
 
 $<path_to_Salmon>/salmon quant -i salmon_transcript_index -1 reads1.fq.gz -2 reads2.fq.gz -p #threads -l A -g genome.gtf --seqBias --gcBias --posBias
+
+
 
 
