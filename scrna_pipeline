@@ -47,13 +47,40 @@ trim_galore --nextera -o fastq_trimmed_results filename_1.fastq filename_2.fastq
 
 fastqc -o fastqc_results filename_trimmed_1.fastq filename_trimmed_2.fastq
 
+
+
+
 ###Step5 STAR Alignment
 
 mkdir results
 mkdir results/STAR
 STAR --runThreadN 4 --genomeDir indices/STAR --readFilesIn filename_1.fastq filename_2.fastq --outFileNamePrefix results/STAR/
 
-###Step7 Play with files
+#bash code for RNA alignment using STAR
+
+#!/bin/bash
+
+
+#SBATCH --job-name="star_alignment"
+#SBATCH --mail-user=wittaya.hpc.cluster@gmail.com
+#SBATCH --mail-type=ALL
+#SBATCH --ntasks=1
+#SBATHC --ntasks-per-node=1
+#SBATCH --cpus-per-task=4
+#SBATCH --mem-per-cpu=8G
+#SBATCH --nodes=1
+#SBATCH --time=3:00:00
+#SBATCH --output=star_alignment_mouse.out
+
+date
+
+STAR --runThreadN 4 --genomeDir ~/rb32/test_scrna/clone_github/scRNA.seq.course/STAR/indices 
+--readFilesIn ~/rb32/test_scrna/clone_github/scRNA.seq.course/Share/ERR522959_1.fastq 
+              ~/rb32/test_scrna/clone_github/scRNA.seq.course/Share/ERR522959_2.fastq
+--outFileNamePrefix ~/rb32/test_scrna/clone_github/scRNA.seq.course/alignment_results/ERR522959_
+
+
+###Step6 Play with files
 #convert BAM/SAM files
 
 samtools view -S -b filename.sam > filename.bam
