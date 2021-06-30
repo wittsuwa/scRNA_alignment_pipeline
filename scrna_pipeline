@@ -47,7 +47,26 @@ trim_galore --nextera -o fastq_trimmed_results filename_1.fastq filename_2.fastq
 
 fastqc -o fastqc_results filename_trimmed_1.fastq filename_trimmed_2.fastq
 
+##bash for fastQC
 
+#!/bin/bash
+
+
+#SBATCH --job-name="fastQC_after_alignment"
+#SBATCH --mail-user=wittaya.hpc.cluster@gmail.com
+#SBATCH --mail-type=ALL
+#SBATCH --ntasks=1
+#SBATHC --ntasks-per-node=1
+#SBATCH --cpus-per-task=4
+#SBATCH --mem-per-cpu=8G
+#SBATCH --nodes=1
+#SBATCH --time=3:00:00
+#SBATCH --output=fastQC_after_alignment.out
+
+date
+
+fastqc -o ~/rb32/test_scrna/clone_github/scRNA.seq.course/alignment_results/ \
+~/rb32/test_scrna/clone_github/scRNA.seq.course/alignment_results/ERR522959_Aligned.out.bam
 
 
 ###Step5 STAR Alignment
@@ -85,6 +104,27 @@ STAR --runThreadN 4 --genomeDir ~/rb32/test_scrna/clone_github/scRNA.seq.course/
 
 samtools view -S -b filename.sam > filename.bam
 samtools view -h filename.bam > filename.sam
+
+##bash for SAM to BAM conversion
+
+#!/bin/bash
+
+
+#SBATCH --job-name="SAM to BAM"
+#SBATCH --mail-user=wittaya.hpc.cluster@gmail.com
+#SBATCH --mail-type=ALL
+#SBATCH --ntasks=1
+#SBATHC --ntasks-per-node=1
+#SBATCH --cpus-per-task=4
+#SBATCH --mem-per-cpu=8G
+#SBATCH --nodes=1
+#SBATCH --time=3:00:00
+#SBATCH --output=SAM_to_BAM.out
+
+date
+
+samtools view -S -b ~/rb32/test_scrna/clone_github/scRNA.seq.course/alignment_results/ERR522959_Aligned.out.sam \
+> ~/rb32/test_scrna/clone_github/scRNA.seq.course/alignment_results/ERR522959_Aligned.out.bam
 
 #sort reads by name
 samtools sort -n original.bam -o sorted_by_name.bam
