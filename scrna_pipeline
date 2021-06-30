@@ -176,5 +176,27 @@ bam_stat.py -i input.bam -r genome.bed -o output.txt
 split_bam.py -i input.bam -r rRNAmask.bed -o output.txt
 
 
+###Step9 ReadCount using FeatureCounts
+
+#!/bin/bash
+
+
+#SBATCH --job-name="read_count"
+#SBATCH --mail-user=wittaya.hpc.cluster@gmail.com
+#SBATCH --mail-type=ALL
+#SBATCH --ntasks=1
+#SBATHC --ntasks-per-node=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem-per-cpu=8G
+#SBATCH --nodes=1
+#SBATCH --time=1:00:00
+#SBATCH --output=read_count.out
+
+date
+
+featureCounts -O -M -Q 30 -p -a ~/rb32/test_scrna/clone_github/scRNA.seq.course/STAR/gene_annotation/Mus_musculus.GRCm39.104.gtf \
+-o ~/rb32/test_scrna/clone_github/scRNA.seq.course/alignment_results/ERR522959_read_count.txt \
+~/rb32/test_scrna/clone_github/scRNA.seq.course/alignment_results/ERR522959_Aligned.out.bam
+
 
 
