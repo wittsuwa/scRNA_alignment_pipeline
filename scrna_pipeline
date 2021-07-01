@@ -35,6 +35,7 @@ STAR --runThreadN {number of cores}  \
      --sjdbGTFfile /path/to/GTF/or/GFF 
      --sjdbOverhang {read length - 1}
 
+#Becareful with spaces because STAR cannot deal with more than one space
 #hint
 wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR523/ERR523158/ERR523158_1.fastq.gz
 
