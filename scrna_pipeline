@@ -26,6 +26,14 @@ mkdir indices
 mkdir indices/STAR
 STAR --runThreadN 4 --runMode genomeGenerate --genomeDir indices/STAR --genomeFastaFiles reference.transcripts.fa
 
+#or
+
+STAR --runThreadN {number of cores}  \
+     --runMode genomeGenerate 
+     --genomeDir /path/to/resulting/STAR/genome/ 
+     --genomeFastaFiles /path/to/genome/fasta/file 
+     --sjdbGTFfile /path/to/GTF/or/GFF 
+     --sjdbOverhang {read length - 1}
 
 #hint
 wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR523/ERR523158/ERR523158_1.fastq.gz
